@@ -1,14 +1,18 @@
-/* 
-Constructors in JavaScript
---------------------------
-- A constructor is a special function used to create and initialize objects.
-- By convention, constructor function names start with a capital letter (e.g., Person, Car).
-- When you use the `new` keyword:
-   1. A new empty object `{}` is created.
-   2. That object’s `__proto__` is linked to the constructor function’s prototype.
-   3. The constructor runs with `this` bound to the new object.
-   4. The new object is returned (unless the constructor explicitly returns another object).
-*/
+/* -------------------------------------------------
+   Constructors in JavaScript
+   -------------------------------------------------
+   - Special functions used with `new` to create and 
+     initialize objects.
+   - By convention → Capitalized names (Person, Car).
+   - Steps when `new` is used:
+       1. A new empty object `{}` is created.
+       2. The object’s `__proto__` is linked to 
+          Constructor.prototype.
+       3. The constructor executes with `this` bound 
+          to the new object.
+       4. If constructor returns a non-primitive 
+          object, that object is returned instead of `this`.
+---------------------------------------------------*/
 
 
 /* 1. Constructor Function */
@@ -19,50 +23,49 @@ function Person(name, age) {
 const p1 = new Person("Alice", 25);
 
 
-/* 
-2. Adding Methods via Prototype
-   - Adding methods inside the constructor duplicates them across instances → memory inefficient.
-   - Best practice: add shared methods to the prototype.
+/* 2. Prototype Methods (best practice) 
+   - Methods inside constructor → memory heavy.
+   - Use prototype so all instances share the method.
 */
 Person.prototype.sayHello = function() {
-    return `Hi, I'm ${this.name}`;
+    return `Hi, my name is ${this.name}, I'm ${this.age} years old.`;
 };
 console.log(p1.sayHello());
 
 
-/* 
-3. Class Syntax (ES6)
-   - `class` is just syntactic sugar over constructor functions + prototypes.
+/* 3. Class Syntax (ES6) 
+   - Sugar over constructor + prototype.
+   - Cleaner + supports private fields, static methods, 
+     inheritance, etc.
 */
-class PersonClass {
-    constructor(name, age) {
+class Student {
+    constructor(name, course) {
         this.name = name;
-        this.age = age;
+        this.course = course;
     }
-    sayHello() {
-        return `Hi, I'm ${this.name}`;
+    study() {
+        return `${this.name} is studying ${this.course}`;
     }
 }
-const p2 = new PersonClass("Bob", 30);
-console.log(p2.sayHello());
+const s1 = new Student("Charlie", "CSE");
+console.log(s1.study());
 
 
-/* 
-4. Returning from Constructor
-   - Normally, constructors return `this`.
-   - If you explicitly return an object, it replaces the instance.
+/* 4. Special Case: Constructor Returning Object 
+   - Normally returns `this`.
+   - But if you return an object explicitly, it overrides.
 */
 function Car(model) {
     this.model = model;
-    return { type: "Overridden Object" }; // overrides instance
+    return { type: "Overridden Object" };
 }
-const c1 = new Car("Tesla");
-console.log(c1); // { type: "Overridden Object" }
+const car1 = new Car("Tesla");
+console.log(car1); // { type: "Overridden Object" }
 
 
-/* 
-5. Private Fields in Constructors (ES2022)
-   - Using `#` to create truly private fields.
+/* 5. Private Fields (ES2022+)
+   - `#field` creates truly private fields.
+   - Not accessible outside the class.
 */
 class BankAccount {
     #balance;
@@ -74,6 +77,6 @@ class BankAccount {
         return this.#balance;
     }
 }
-const acc = new BankAccount(1000);
-console.log(acc.deposit(500)); // 1500
-// console.log(acc.#balance); ❌ Error → private field
+const account = new BankAccount(1000);
+console.log(account.deposit(500)); // 1500
+// console.log(account.#balance); ❌ SyntaxError
