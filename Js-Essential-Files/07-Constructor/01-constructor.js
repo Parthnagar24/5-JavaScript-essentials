@@ -23,32 +23,6 @@ function Person(name, age) {
 const p1 = new Person("Alice", 25);
 
 
-/* 2. Prototype Methods (best practice) 
-   - Methods inside constructor → memory heavy.
-   - Use prototype so all instances share the method.
-*/
-Person.prototype.sayHello = function() {
-    return `Hi, my name is ${this.name}, I'm ${this.age} years old.`;
-};
-console.log(p1.sayHello());
-
-
-/* 3. Class Syntax (ES6) 
-   - Sugar over constructor + prototype.
-   - Cleaner + supports private fields, static methods, 
-     inheritance, etc.
-*/
-class Student {
-    constructor(name, course) {
-        this.name = name;
-        this.course = course;
-    }
-    study() {
-        return `${this.name} is studying ${this.course}`;
-    }
-}
-const s1 = new Student("Charlie", "CSE");
-console.log(s1.study());
 
 
 /* 4. Special Case: Constructor Returning Object 
